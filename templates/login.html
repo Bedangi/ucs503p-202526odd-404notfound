@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #38e07b;
+      --secondary-color: #1a4d2e;
+      --background-color: #1a1a1a;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --accent-color: #28a058;
+    }
+    body {
+      font-family: 'Spline Sans', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+    }
+    .form-input {
+      background-color: #f3f4f6;
+      border-color: #d1d5db;
+      color: #111827;
+    }
+    .form-input::placeholder {
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--background-color)] text-[var(--text-primary)]">
+  <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+    <div class="layout-container flex h-full grow flex-col">
+      <main class="flex flex-1 items-center justify-center py-10">
+        <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-[var(--secondary-color)] mb-2">Login</h2>
+          </div>
+
+          <form method="POST" class="space-y-6" action="/login">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-2"> Name </label>
+              <input title="name" id="name" type="text" name="name" placeholder="Enter your username" required class="form-input w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[var(--primary-color)]">
+            </div>
+
+            <div>
+              <label for="plate" class="block text-sm font-medium text-gray-700 mb-2"> Car Plate No </label>
+              <input title="plate" id="plate" type="text" name="plate" placeholder="Enter car plate number" required class="form-input w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[var(--primary-color)]">
+            </div>
+
+            <div>
+              <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-bold text-[var(--background-color)] bg-[var(--primary-color)] hover:bg-[var(--accent-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition-colors duration-300">Login</button>
+            </div>
+          </form>
+
+          <p class="text-center text-sm text-gray-600">
+            Don't have an account? 
+            <a href="{{ url_for('signup_page') }}" class="text-[var(--secondary-color)] font-medium hover:underline">Sign Up</a>
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

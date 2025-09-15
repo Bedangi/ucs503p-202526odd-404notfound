@@ -1,0 +1,18 @@
+{
+    "users": [
+        {
+            "name": "Arjun Mehta",
+            "plate": "HR26DQ5551",
+            "start_time": null,
+            "active": false,
+            "bill": 0
+        },
+        {
+            "name": "Riya Sharma",
+            "plate": "RJ14CV0002",
+            "start_time": null,
+            "active": false,
+            "bill": 0
+        }
+    ]
+}

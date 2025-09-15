@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Plate Scanner</title>
+</head>
+<body style="text-align: center; font-family: Arial;">
+  <h2>Car Plate Scanner</h2>
+  <video id="video" autoplay playsinline width="300" height="200" style="border:1px solid #ccc;"></video>
+  <p id="status">Streaming video...</p>
+
+  <script>
+    const video = document.getElementById('video');
+    const status = document.getElementById('status');
+    const backendURL = "http://localhost:5000/anpr";
+
+    // Ask for camera access
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => video.srcObject = stream)
+      .catch(err => status.innerText = "Camera error: " + err);
+
+    // Capture frame and send every 5 seconds
+    setInterval(() => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0);
+
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append("frame", blob, "frame.jpg");
+
+        fetch(backendURL, { method: "POST", body: formData })
+          .then(res => res.text())
+          .then(msg => status.innerText = "Backend: " + msg)
+          .catch(err => console.error(err));
+      }, "image/jpeg");
+    }, 10000);
+  </script>
+</body>
+</html>

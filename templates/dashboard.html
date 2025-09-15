@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #38e07b;
+        --secondary-color: #28a058;
+        --background-color: #1a1a1a;
+        --text-primary: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --accent-color: #4ce68b;
+      }
+      body {
+        font-family: 'Spline Sans', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-primary);
+      }
+    </style>
+</head>
+
+<body class="dark">
+    <div class="relative flex size-full min-h-screen flex-col bg-[var(--background-color)]">
+      <div class="flex h-full grow flex-col">
+        <main class="flex flex-1 items-center justify-center py-16">
+            <div class="w-full max-w-lg p-10 space-y-10">
+                <div class="text-center">
+                    <h2 class="text-4xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight">
+                        Welcome {{ user.name }}
+                    </h2>
+                    <p class="text-lg text-[var(--text-secondary)] leading-relaxed">
+                        Here are the details of your active parking session.
+                    </p>
+                </div>
+
+                <div id="status-card" class="bg-gray-800 rounded-3xl shadow-lg p-8 border border-gray-700 space-y-6">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                        <p class="text-base font-medium text-[var(--text-secondary)]">
+                            Car Plate
+                        </p>
+                        <p class="text-lg font-bold text-[var(--primary-color)]">{{ user.plate }}</p>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                        <p class="text-base font-medium text-[var(--text-secondary)]">Status</p>
+                        <p class="text-lg font-bold text-[var(--text-primary)]"><span id="status"></span></p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-base font-medium text-[var(--text-secondary)]">Elapsed Time</p>
+                        <p class="text-lg font-bold text-[var(--text-primary)]"><span id="elapsed"></span></p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <p class="text-base font-medium text-[var(--text-secondary)]">Bill</p>
+                        <p class="text-lg font-bold text-[var(--text-primary)]">Rs <span id="bill"></span></p>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button onclick="leaveNow('{{ user.plate }}')" class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">Leave Now</button>
+                </div>
+            </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script>
+        const plate = '{{ user.plate }}';
+        updateStatus(plate);
+        setInterval(() => updateStatus(plate), 1000);
+    </script>
+</body>
+</html>
