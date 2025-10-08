@@ -1,18 +1,41 @@
 {
     "users": [
         {
-            "name": "Arjun Mehta",
-            "plate": "HR26DQ5551",
+            "username": "Alice",
+            "email": "alice@example.com",
+            "password": "alice123", 
+            "token": null,
             "start_time": null,
             "active": false,
-            "bill": 0
+            "bill": 0,
+            "plates": [
+                "HR26DQ5551",
+                "XYZ 123",
+                "ABC 456"
+            ]
         },
         {
-            "name": "Riya Sharma",
-            "plate": "RJ14CV0002",
+            "username": "Bob",
+            "email": "bob@example.com",
+            "password": "bobsecure", 
+            "token": "admin123",
+            "start_time": null,
+            "active": true,
+            "bill": 40,
+            "plates": [
+                "RJ14CV0002",
+                "LMN 789"
+            ]
+        },
+        {
+            "username": "Charlie",
+            "email": "charlie@example.com",
+            "password": "charliepass",
+            "token": null,
             "start_time": null,
             "active": false,
-            "bill": 0
+            "bill": 0,
+            "plates": []
         }
     ]
 }
