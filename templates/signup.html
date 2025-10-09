@@ -57,9 +57,9 @@
               <h1 class="text-[var(--text-primary)] text-xl font-bold leading-tight">ParkSmart</h1>
           </div>
           <nav class="flex items-center gap-8 text-sm font-medium">
-              <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-[var(--secondary-color)] text-[var(--text-primary)] text-sm font-bold leading-normal tracking-wide hover:bg-[var(--accent-color)] transition-colors duration-300" onclick="window.location.href='login.html'">
+              <a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-[var(--secondary-color)] text-[var(--text-primary)] text-sm font-bold leading-normal tracking-wide hover:bg-[var(--accent-color)] transition-colors duration-300" href="{{ url_for('login_page') }}">
                   <span class="truncate">Log in</span>
-              </button>
+              </a>
           </nav>
       </header>
 
