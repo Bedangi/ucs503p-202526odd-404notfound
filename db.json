@@ -3,7 +3,7 @@
         {
             "username": "Alice",
             "email": "alice@example.com",
-            "password": "alice123", 
+            "password": "alice123",
             "token": null,
             "start_time": null,
             "active": false,
@@ -17,7 +17,7 @@
         {
             "username": "Bob",
             "email": "bob@example.com",
-            "password": "bobsecure", 
+            "password": "bobsecure",
             "token": "admin123",
             "start_time": null,
             "active": true,
@@ -31,6 +31,16 @@
             "username": "Charlie",
             "email": "charlie@example.com",
             "password": "charliepass",
+            "token": null,
+            "start_time": null,
+            "active": false,
+            "bill": 0,
+            "plates": []
+        },
+        {
+            "username": "Blueberry",
+            "email": "blueberry@example.com",
+            "password": "1234",
             "token": null,
             "start_time": null,
             "active": false,

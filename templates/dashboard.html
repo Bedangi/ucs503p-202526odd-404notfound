@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="pt-6">
-                    <button onclick="leaveNow('{{ user.plate }}')" class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">Leave Now</button>
+                    <button onclick="leaveNow('{{ user.email }}')" class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">Leave Now</button>
                 </div>
             </div>
         </main>
@@ -68,9 +68,9 @@
 
     <script src="/static/script.js"></script>
     <script>
-        const plate = '{{ user.plate }}';
-        updateStatus(plate);
-        setInterval(() => updateStatus(plate), 1000);
+        const email = '{{ user.email }}';
+        updateStatus(email);
+        setInterval(() => updateStatus(email), 1000);
     </script>
 </body>
 </html>

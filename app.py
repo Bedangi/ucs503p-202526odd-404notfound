@@ -110,7 +110,30 @@ def add_plate(email):
 
     return redirect(url_for("plates_page", email=email))
 
-# Dashboard (optional)
+@app.route("/delete_plate", methods=["POST"])
+def delete_plate():
+    db = load_db()
+    email = request.form.get("email")
+    plate = request.form.get("plate")
+    user = next((u for u in db["users"] if u["email"] == email), None)
+    if user and plate in user["plates"]:
+        user["plates"].remove(plate)
+        return jsonify({"success": True})
+    return jsonify({"success": False})
+
+@app.route("/edit_plate", methods=["POST"])
+def edit_plate():
+    db = load_db()
+    email = request.form.get("email")
+    old_plate = request.form.get("old_plate")
+    new_plate = request.form.get("new_plate")
+    user = next((u for u in db["users"] if u["email"] == email), None)
+    if user and old_plate in user["plates"]:
+        index = user["plates"].index(old_plate)
+        user["plates"][index] = new_plate
+        return jsonify({"success": True})
+    return jsonify({"success": False})
+
 @app.route("/dashboard/<email>")
 def dashboard(email):
     db = load_db()

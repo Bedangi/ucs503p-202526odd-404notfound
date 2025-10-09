@@ -54,17 +54,17 @@
                                     local_parking
                                 </span>
                             </div>
-                            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Welcome {{ user.name }} ParkSmart</h1>
+                            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">ParkSmart</h1>
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
-                            <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">Find Parking</a>
-                            <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">My Bookings</a>
+                            <!-- <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">My Bookings</a> -->
+                            <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="{{url_for('dashboard', email=user.email)}}">Parking Status</a>
                             <a class="text-zinc-900 dark:text-white font-semibold" href="#">My Account</a>
                         </nav>
                         <div class="flex items-center gap-4">
-                            <button class="relative rounded-full p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+                            <!-- <button class="relative rounded-full p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
                                 <span class="material-symbols-outlined">notifications</span>
-                            </button>
+                            </button> -->
                             <div class="w-10 h-10 rounded-full bg-cover bg-center"
                                 style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoHkB-5HDinGI-oK77zd4OtLL5jAkwsne5kw5OFubvSsaVgqsENWkHWA0P5QVNmTNWi-So71GaafsFdq8vIwxFRHhcw_8DRmTP6-7SBRE0d5nEQhkqI_kP02Mak6ncf0MnV4hwtiL8Q9mfbnvBeabYYFg3uHFeMOKQwvpjNV3JsdhzgfhrHtYcTdQgdT3q2rmlzaaIj6_CnF8wni81TF23OZAsBeSJRjPn59WGuGQM01UGhwqOiiSssu7l43gAxJ9DiGhyKyKPlP0");'>
                             </div>
@@ -101,41 +101,21 @@
 
                             <div class="mt-12">
                                 <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-4">Added Plates</h3>
+                                {% for plate in user.plates %}
                                 <div class="space-y-4">
-                                    <div class="flex items-center justify-between bg-white dark:bg-zinc-900/50 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                                        <p class="font-mono text-lg text-zinc-800 dark:text-zinc-200 tracking-wider">XYZ 123</p>
+                                    <div class="flex items-center justify-between bg-white dark:bg-zinc-900/50 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800" data-plate="{{ plate }}">
+                                        <p class="font-mono text-lg text-zinc-800 dark:text-zinc-200 tracking-wider">{{ plate }}</p>
                                         <div class="flex items-center gap-2">
-                                            <button class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+                                            <button onclick="editPlate('{{ plate }}')" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
                                                 <span class="material-symbols-outlined text-base">edit</span>
                                             </button>
-                                            <button class="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors">
-                                                <span class="material-symbols-outlined text-base">delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between bg-white dark:bg-zinc-900/50 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                                            <p class="font-mono text-lg text-zinc-800 dark:text-zinc-200 tracking-wider">ABC 456</p>
-                                            <div class="flex items-center gap-2">
-                                                <button class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
-                                                    <span class="material-symbols-outlined text-base">edit</span>
-                                                </button>
-                                                <button class="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors">
-                                                    <span class="material-symbols-outlined text-base">delete</span>
-                                                </button>
-                                            </div>
-                                    </div>
-                                    <div class="flex items-center justify-between bg-white dark:bg-zinc-900/50 p-4 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                                        <p class="font-mono text-lg text-zinc-800 dark:text-zinc-200 tracking-wider">DEF 789</p>
-                                        <div class="flex items-center gap-2">
-                                            <button class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
-                                                <span class="material-symbols-outlined text-base">edit</span>
-                                            </button>
-                                            <button class="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors">
+                                            <button onclick="deletePlate('{{ plate }}')" class="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors">
                                                 <span class="material-symbols-outlined text-base">delete</span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -143,11 +123,12 @@
             </main>
 
             <!-- Footer -->
-            <footer class="border-t border-zinc-200 dark:border-zinc-800 mt-auto">
+            <!-- <footer class="border-t border-zinc-200 dark:border-zinc-800 mt-auto">
                 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-zinc-500 dark:text-zinc-400">
                     <p>© 2025 ParkSmart. All rights reserved.</p>
                 </div>
-            </footer>
+            </footer> -->
         </div>
+        <script src="/static/script.js"></script>
     </body>
 </html>
