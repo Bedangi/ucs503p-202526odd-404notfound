@@ -2,6 +2,7 @@ async function updateStatus(email) {
     const res = await fetch(`/status/${email}`);
     const data = await res.json();
 
+    document.getElementById("plate").innerText = data.active ? data.active_plate : "-";
     document.getElementById("status").innerText = data.active ? "Parked" : "Not Parked";
     document.getElementById("elapsed").innerText = data.active ? data.elapsed + " min" : "-";
     document.getElementById("bill").innerText = data.bill;

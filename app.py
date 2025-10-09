@@ -186,7 +186,8 @@ def status(email):
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    response = {"active": user["active"], "bill": user["bill"], "plates": user.get("plates", [])}
+    active_plate = user.get("active_plate") if user.get("active") else None
+    response = {"active": user["active"], "bill": user["bill"], "plates": user.get("plates", []),"active_plate": active_plate}
     if user["active"]:
         response["start_time"] = user["start_time"]
         response["elapsed"] = round((time.time() - user["start_time"]) / 60, 2)
@@ -206,9 +207,16 @@ def anpr():
 
         db = load_db()
         user = next((u for u in db["users"] if plate in u["plates"]), None)
-        requests.post(f"http://localhost:5000/scan/{user["email"]}")
-
-        return f"Detected Plate: {plate}"
+        
+        if user:
+            user["active_plate"] = plate
+            user["start_time"] = time.time()
+            user["active"] = True
+            # requests.post(f"http://localhost:5000/scan/{user['email']}")
+            save_db(db)
+            return f"Detected Plate: {plate}"
+        else:
+            return f"Detected Plate: {plate}, Plate not registered"
     else:
         return "No plate detected"
 
