@@ -118,6 +118,7 @@ def delete_plate():
     user = next((u for u in db["users"] if u["email"] == email), None)
     if user and plate in user["plates"]:
         user["plates"].remove(plate)
+        save_db(db)
         return jsonify({"success": True})
     return jsonify({"success": False})
 
@@ -131,6 +132,7 @@ def edit_plate():
     if user and old_plate in user["plates"]:
         index = user["plates"].index(old_plate)
         user["plates"][index] = new_plate
+        save_db(db)
         return jsonify({"success": True})
     return jsonify({"success": False})
 
