@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <!-- Razorpay Script -->
     
     <style type="text/tailwindcss">
       :root {
@@ -30,36 +31,40 @@
             <div class="w-full max-w-lg p-10 space-y-10">
                 <div class="text-center">
                     <h2 class="text-4xl font-extrabold text-[var(--text-primary)] mb-4 leading-tight">
-                        Welcome {{ user.name }}
+                        Welcome {{ user.username }}
                     </h2>
                     <p class="text-lg text-[var(--text-secondary)] leading-relaxed">
                         Here are the details of your active parking session.
                     </p>
                 </div>
 
+                <!-- Parking Status Card -->
                 <div id="status-card" class="bg-gray-800 rounded-3xl shadow-lg p-8 border border-gray-700 space-y-6">
                     <div class="flex justify-between items-center pb-4 border-b border-gray-700">
-                        <p class="text-base font-medium text-[var(--text-secondary)]">
-                            Car Plate
-                        </p>
+                        <p class="text-base font-medium text-[var(--text-secondary)]">Car Plate</p>
                         <p class="text-lg font-bold text-[var(--primary-color)]"><span id="plate"></span></p>
                     </div>
                     <div class="flex justify-between items-center pb-4 border-b border-gray-700">
                         <p class="text-base font-medium text-[var(--text-secondary)]">Status</p>
                         <p class="text-lg font-bold text-[var(--text-primary)]"><span id="status"></span></p>
                     </div>
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-700">
                         <p class="text-base font-medium text-[var(--text-secondary)]">Elapsed Time</p>
                         <p class="text-lg font-bold text-[var(--text-primary)]"><span id="elapsed"></span></p>
                     </div>
                     <div class="flex justify-between items-center">
                         <p class="text-base font-medium text-[var(--text-secondary)]">Bill</p>
-                        <p class="text-lg font-bold text-[var(--text-primary)]">Rs <span id="bill"></span></p>
+                        <p class="text-lg font-bold text-[var(--text-primary)]">₹ <span id="bill"></span></p>
                     </div>
                 </div>
 
+                <!-- Payment Button -->
                 <div class="pt-6">
-                    <button onclick="leaveNow('{{ user.email }}')" class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">Leave Now</button>
+                    <button 
+                      onclick="initiatePayment('{{ user.email }}')" 
+                      class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">
+                        Pay & Leave
+                    </button>
                 </div>
             </div>
         </main>
@@ -71,6 +76,64 @@
         const email = '{{ user.email }}';
         updateStatus(email);
         setInterval(() => updateStatus(email), 1000);
+
+        // Razorpay Payment Integration
+        async function initiatePayment(email) {
+            try {
+                // Step 1: Fetch order details from backend
+                const res = await fetch(`/create_order/${email}`);
+                const data = await res.json();
+
+                if (!data.order_id) {
+                    alert("Failed to create order");
+                    return;
+                }
+
+                // Step 2: Configure Razorpay
+                const options = {
+                    key: "rzp_test_RRlePW8ry9sAIu", // Your Razorpay Test Key
+                    amount: data.amount, // amount in paisa
+                    currency: "INR",
+                    name: "ParkSmart",
+                    description: "Parking Payment",
+                    order_id: data.order_id,
+                    handler: async function (response) {
+                        // Step 3: Verify Payment on Backend
+                        const verifyRes = await fetch("/verify_payment", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                email: email,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+
+                        const result = await verifyRes.json();
+                        if (result.success) {
+                            alert("✅ Payment Successful! You may now leave.");
+                            location.reload();
+                        } else {
+                            alert("❌ Payment verification failed!");
+                        }
+                    },
+                    prefill: {
+                        email: email,
+                        contact: "9999999999"
+                    },
+                    theme: { color: "#38e07b" }
+                };
+
+                // Step 4: Open Razorpay Popup
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (err) {
+                console.error(err);
+                alert("Error initiating payment.");
+            }
+        }
     </script>
 </body>
 </html>
