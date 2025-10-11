@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parking Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h2>Hello {{ user.username }}, your total bill is ₹{{ amount }}</h2>
+  <button id="pay-btn">Pay Now</button>
+
+  <script>
+    document.getElementById('pay-btn').onclick = function(e){
+      var options = {
+        "key": "{{ key_id }}",
+        "amount": "{{ order.amount }}",
+        "currency": "INR",
+        "name": "Smart Parking System",
+        "description": "Parking Fee Payment",
+        "order_id": "{{ order.id }}",
+        "handler": function (response){
+          alert("Payment successful! 🎉");
+          fetch('/verify_payment', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(response)
+          });
+        },
+        "theme": {"color": "#3399cc"}
+      };
+      var rzp = new Razorpay(options);
+      rzp.open();
+      e.preventDefault();
+    }
+  </script>
+</body>
+</html>
