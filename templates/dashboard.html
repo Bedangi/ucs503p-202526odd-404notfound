@@ -25,6 +25,32 @@
 
 <body class="dark">
     <div class="relative flex size-full min-h-screen flex-col bg-[var(--background-color)]">
+        <!-- Header -->
+            <header class="border-b border-zinc-200 dark:border-zinc-800">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-20">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-primary text-white p-2 rounded-full">
+                                <span class="material-symbols-outlined">
+                                    local_parking
+                                </span>
+                            </div>
+                            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">ParkSmart</h1>
+                        </div>
+                        <nav class="hidden md:flex items-center gap-8">
+                            <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="{{url_for('dashboard', email=user.email)}}">Parking Status</a>
+                            <a class="text-zinc-900 dark:text-white font-semibold" href="{{url_for('plates_page', email=user.email)}}">My Account</a>
+                            <a class="text-zinc-900 dark:text-white font-semibold" href="{{url_for('plates_page', email=user.email)}}">Scan Plate</a>
+                        </nav>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-cover bg-center"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoHkB-5HDinGI-oK77zd4OtLL5jAkwsne5kw5OFubvSsaVgqsENWkHWA0P5QVNmTNWi-So71GaafsFdq8vIwxFRHhcw_8DRmTP6-7SBRE0d5nEQhkqI_kP02Mak6ncf0MnV4hwtiL8Q9mfbnvBeabYYFg3uHFeMOKQwvpjNV3JsdhzgfhrHtYcTdQgdT3q2rmlzaaIj6_CnF8wni81TF23OZAsBeSJRjPn59WGuGQM01UGhwqOiiSssu7l43gAxJ9DiGhyKyKPlP0");'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
       <div class="flex h-full grow flex-col">
         <main class="flex flex-1 items-center justify-center py-16">
             <div class="w-full max-w-lg p-10 space-y-10">

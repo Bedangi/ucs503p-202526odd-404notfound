@@ -57,14 +57,10 @@
                             <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">ParkSmart</h1>
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
-                            <!-- <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="#">My Bookings</a> -->
                             <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="{{url_for('dashboard', email=user.email)}}">Parking Status</a>
-                            <a class="text-zinc-900 dark:text-white font-semibold" href="#">My Account</a>
+                            <a class="text-zinc-900 dark:text-white font-semibold" href="{{url_for('plates_page', email=user.email)}}">My Account</a>
                         </nav>
                         <div class="flex items-center gap-4">
-                            <!-- <button class="relative rounded-full p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
-                                <span class="material-symbols-outlined">notifications</span>
-                            </button> -->
                             <div class="w-10 h-10 rounded-full bg-cover bg-center"
                                 style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoHkB-5HDinGI-oK77zd4OtLL5jAkwsne5kw5OFubvSsaVgqsENWkHWA0P5QVNmTNWi-So71GaafsFdq8vIwxFRHhcw_8DRmTP6-7SBRE0d5nEQhkqI_kP02Mak6ncf0MnV4hwtiL8Q9mfbnvBeabYYFg3uHFeMOKQwvpjNV3JsdhzgfhrHtYcTdQgdT3q2rmlzaaIj6_CnF8wni81TF23OZAsBeSJRjPn59WGuGQM01UGhwqOiiSssu7l43gAxJ9DiGhyKyKPlP0");'>
                             </div>
@@ -122,12 +118,6 @@
                 </div>
             </main>
 
-            <!-- Footer -->
-            <!-- <footer class="border-t border-zinc-200 dark:border-zinc-800 mt-auto">
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-zinc-500 dark:text-zinc-400">
-                    <p>© 2025 ParkSmart. All rights reserved.</p>
-                </div>
-            </footer> -->
         </div>
         <script>
             const currUserEmail = "{{ user.email }}"
