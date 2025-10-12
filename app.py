@@ -1,21 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_cors import CORS
 import requests
-import time, threading, razorpay
+import time, razorpay, os
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
 
-app.config["MONGO_URI"] = "mongodb+srv://bedasaha789_db_user:5eZT4qYaghR57LoG@cluster0.fyqmenz.mongodb.net/parksmart_db?retryWrites=true&w=majority&appName=Cluster0"
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 users = mongo.db.users
 
-API_KEY = "500a3d6beb83762f839fae49fff74725ea44fb26" # Scanner API
+API_KEY = os.getenv("PLATE_RECOGNIZER_API_KEY") # Scanner API
 # Razorpay Test Mode Setup
-razorpay_client = razorpay.Client(auth=("rzp_test_RRlePW8ry9sAIu", "T7pMD5f8K9ffHIw1lIOONiX0"))
+razorpay_client = razorpay.Client(auth=(os.getenv("RAZORPAY_KEY_ID"), os.getenv("RAZORPAY_KEY_SECRET")))
 
 # Signup
 @app.route("/")
