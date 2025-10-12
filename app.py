@@ -1,13 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_cors import CORS
 import requests
-import time, threading, razorpay, os
-import pytesseract
+import time, threading, razorpay
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
-
-pytesseract.pytesseract.tesseract_cmd = r"D:\softwares\Tesseract-OCR\tesseract.exe"
 
 app = Flask(__name__)
 CORS(app)
@@ -248,7 +245,7 @@ def bill_page(email):
     if not user.get("start_time") or not user.get("bill"):
         return "No parking session found for this user", 400
 
-    start_time = user["start_time"]
+        start_time = user["start_time"]
     end_time = user.get("end_time", time.time())
     duration_seconds = end_time - start_time
     duration_str = str(timedelta(seconds=int(duration_seconds)))
