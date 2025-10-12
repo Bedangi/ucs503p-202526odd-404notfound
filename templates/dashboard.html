@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
     <style type="text/tailwindcss">
@@ -39,7 +43,7 @@
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
                             <a class="text-zinc-600 dark:text-zinc-300 hover:text-primary dark:hover:text-primary transition-colors" href="{{url_for('dashboard', email=user.email)}}">Parking Status</a>
-                            <a class="text-zinc-900 dark:text-white font-semibold" href="{{url_for('plates_page', email=user.email)}}">My Account</a>
+                            <a class="text-zinc-900 dark:text-white" href="{{url_for('plates_page', email=user.email)}}">My Account</a>
                         </nav>
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-full bg-cover bg-center"
