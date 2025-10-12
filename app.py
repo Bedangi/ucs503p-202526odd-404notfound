@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_cors import CORS
 import requests
-import time, threading
+import time, threading, razorpay
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -13,7 +13,9 @@ app.config["MONGO_URI"] = "mongodb+srv://bedasaha789_db_user:5eZT4qYaghR57LoG@cl
 mongo = PyMongo(app)
 users = mongo.db.users
 
-API_KEY = "500a3d6beb83762f839fae49fff74725ea44fb26"
+API_KEY = "500a3d6beb83762f839fae49fff74725ea44fb26" # Scanner API
+# Razorpay Test Mode Setup
+razorpay_client = razorpay.Client(auth=("rzp_test_RRlePW8ry9sAIu", "T7pMD5f8K9ffHIw1lIOONiX0"))
 
 # Signup
 @app.route("/")
@@ -40,7 +42,8 @@ def signup():
         "active": False,
         "bill": 0,
         "plates": [],
-        "active_plate": None
+        "active_plate": None,
+        "payment_status": "unpaid"
     }
     users.insert_one(user)
     return redirect(url_for("plates_page", email=email))
@@ -159,6 +162,51 @@ def status(email):
         response["start_time"] = user["start_time"]
         response["elapsed"] = round((time.time() - user["start_time"]) / 60, 2)
     return jsonify(response)
+
+# PAYMENT 
+@app.route("/pay/<email>")
+def pay_now(email):
+    user = users.find_one({"email": email})
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    if user["bill"] <= 0:
+        return jsonify({"error": "No pending bill"}), 400
+
+    try:
+        amount = int(user["bill"] * 100)
+        if amount < 100:  # Razorpay minimum is 100 paise (1 INR)
+            return jsonify({"error": "Amount too small. Minimum is 1 INR"}), 400
+            
+        order = razorpay_client.order.create({
+            "amount": amount,
+            "currency": "INR",
+            "receipt": f"receipt_{email}_{int(time.time())}" 
+        })
+        
+        print(f"Order created successfully: {order}")
+        return jsonify(order)
+        
+    except Exception as e:
+        print(f"Razorpay order creation failed: {str(e)}")  # This will show the actual error
+        return jsonify({"error": f"Failed to create order: {str(e)}"}), 500
+
+@app.route("/verify_payment", methods=["POST"])
+def verify_payment():
+    data = request.get_json()
+    print("Payment received:", data)
+    email = data.get("email")
+    # Update bill status
+    razorpay_client.utility.verify_payment_signature({
+        'razorpay_order_id': data['razorpay_order_id'],
+        'razorpay_payment_id': data['razorpay_payment_id'],
+        'razorpay_signature': data['razorpay_signature']
+    })
+    user = users.find_one({"email": email, "payment_status": "unpaid"})
+    if user:
+        users.update_one({"_id": user["_id"]}, {"$set": {"bill": 0, "payment_status": "paid"}})
+        return jsonify({"success": True, "message": "Payment verified and updated."})
+
+    return jsonify({"success": False, "message": "User not found or already paid."})
 
 @app.route('/anpr', methods=['POST'])
 def anpr():
