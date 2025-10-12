@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_cors import CORS
 import requests
-import time, threading, razorpay
+import time, threading, razorpay, os
+import pytesseract
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from datetime import datetime, timedelta
 
+pytesseract.pytesseract.tesseract_cmd = r"D:\softwares\Tesseract-OCR\tesseract.exe"
 
 app = Flask(__name__)
 CORS(app)
@@ -235,6 +238,34 @@ def anpr():
             return f"Detected Plate: {plate}, Plate not registered"
     else:
         return "No plate detected"
+
+@app.route("/bill/<email>")
+def bill_page(email):
+    user = users.find_one({"email": email})
+    if not user:
+        return "User not found", 404
+
+    if not user.get("start_time") or not user.get("bill"):
+        return "No parking session found for this user", 400
+
+    start_time = user["start_time"]
+    end_time = user.get("end_time", time.time())
+    duration_seconds = end_time - start_time
+    duration_str = str(timedelta(seconds=int(duration_seconds)))
+    total_bill = user.get("bill", 0)
+
+    return render_template(
+        "bill.html",
+        user=user,
+        duration=duration_str,
+        total_bill=total_bill,
+        startTime=format_time(start_time),
+        endTime=format_time(end_time)
+    )
+
+def format_time(timestamp):
+    dt = datetime.fromtimestamp(timestamp)
+    return dt.strftime("%H:%M:%S")
 
 # Run App
 if __name__ == "__main__":
