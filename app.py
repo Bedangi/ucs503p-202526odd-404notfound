@@ -131,19 +131,14 @@ def leave_now(email):
     if not user or not user.get("active"):
         return jsonify({"error": "Car not parked"}), 404
 
-    def delayed_check():
-        time.sleep(1)  # 5 sec check
-        u = users.find_one({"email": email})
-        if u and u.get("active"):
-            end_time = time.time()
-            duration = (end_time - u["start_time"]) / 3600
-            cost = round(duration * 20, 2)
-            users.update_one(
-                {"email": email},
-                {"$set": {"active": False, "bill": cost}}
-            )
+    end_time = time.time()
+    duration = (end_time - user["start_time"]) / 3600
+    cost = round(duration * 100, 2)
+    users.update_one(
+        {"email": email},
+        {"$set": {"active": False, "bill": cost}}
+    )
 
-    threading.Thread(target=delayed_check).start()
     return jsonify({"message": "Leave request initiated, checking in 5 sec"})
 
 @app.route("/status/<email>")
@@ -245,7 +240,7 @@ def bill_page(email):
     if not user.get("start_time") or not user.get("bill"):
         return "No parking session found for this user", 400
 
-        start_time = user["start_time"]
+    start_time = user["start_time"]
     end_time = user.get("end_time", time.time())
     duration_seconds = end_time - start_time
     duration_str = str(timedelta(seconds=int(duration_seconds)))
