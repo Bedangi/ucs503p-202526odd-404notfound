@@ -75,65 +75,6 @@
         const email = '{{ user.email }}';
         updateStatus(email);
         setInterval(() => updateStatus(email), 1000);
-
-        // Razorpay Payment Integration
-        async function initiatePayment(email) {
-            try {
-                // Step 1: Fetch order details from backend
-                const res = await fetch(`/pay/${email}`);
-                const data = await res.json();
-
-                if (!data.id) {
-                    alert("Failed to create order");
-                    return;
-                }
-
-                // Step 2: Configure Razorpay
-                const options = {
-                    key: "rzp_test_RRlePW8ry9sAIu", // Your Razorpay Test Key
-                    amount: data.amount, // amount in paisa
-                    currency: "INR",
-                    name: "ParkSmart",
-                    description: "Parking Payment",
-                    order_id: data.id,
-                    handler: async function (response) {
-                        // Step 3: Verify Payment on Backend
-                        const verifyRes = await fetch("/verify_payment", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                email: email,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature
-                            })
-                        });
-
-                        const result = await verifyRes.json();
-                        if (result.success) {
-                            alert("Payment Successful! You may now leave.");
-                            location.reload();
-                        } else {
-                            alert("Payment verification failed!");
-                        }
-                    },
-                    "callback_url": "{{ url_for('dashboard', email = user.email) }}",
-                    prefill: {
-                        email: email,
-                        contact: "9999999999"
-                    },
-                    theme: { color: "#38e07b" }
-                };
-
-                // Step 4: Open Razorpay Popup
-                const rzp = new Razorpay(options);
-                rzp.open();
-
-            } catch (err) {
-                console.error(err);
-                alert("Error initiating payment.");
-            }
-        }
     </script>
 </body>
 </html>
