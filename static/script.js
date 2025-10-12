@@ -9,8 +9,24 @@ async function updateStatus(email) {
 }
 
 async function leaveNow(email) {
-    await fetch(`/leave/${email}`, { method: "POST" });
-    // alert("Leave request sent. Please wait 2 minutes...");
+    try {
+        const response = await fetch(`/leave/${email}`, { method: "POST" });
+
+        let data;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            data = await response.json();
+        } else {
+            data = await response.text(); // fallback
+            throw new Error(data);
+        }
+
+        // If success, redirect
+        window.location.href = `/bill/${email}`;
+    } catch (error) {
+        console.error("Error leaving:", error);
+        alert(error.message || "Failed to process leave request.");
+    }
 }
 
 async function deletePlate(plate) {
