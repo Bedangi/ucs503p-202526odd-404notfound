@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <!-- Razorpay Script -->
     
     <style type="text/tailwindcss">
       :root {
@@ -72,6 +71,7 @@
     </div>
 
     <script src="/static/script.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         const email = '{{ user.email }}';
         updateStatus(email);
@@ -81,10 +81,10 @@
         async function initiatePayment(email) {
             try {
                 // Step 1: Fetch order details from backend
-                const res = await fetch(`/create_order/${email}`);
+                const res = await fetch(`/pay/${email}`);
                 const data = await res.json();
 
-                if (!data.order_id) {
+                if (!data.id) {
                     alert("Failed to create order");
                     return;
                 }
@@ -96,7 +96,7 @@
                     currency: "INR",
                     name: "ParkSmart",
                     description: "Parking Payment",
-                    order_id: data.order_id,
+                    order_id: data.id,
                     handler: async function (response) {
                         // Step 3: Verify Payment on Backend
                         const verifyRes = await fetch("/verify_payment", {
@@ -112,12 +112,13 @@
 
                         const result = await verifyRes.json();
                         if (result.success) {
-                            alert("✅ Payment Successful! You may now leave.");
+                            alert("Payment Successful! You may now leave.");
                             location.reload();
                         } else {
-                            alert("❌ Payment verification failed!");
+                            alert("Payment verification failed!");
                         }
                     },
+                    "callback_url": "{{ url_for('dashboard', email = user.email) }}",
                     prefill: {
                         email: email,
                         contact: "9999999999"
