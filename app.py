@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
