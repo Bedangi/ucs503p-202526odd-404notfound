@@ -219,7 +219,15 @@ def anpr():
         print("Detected Plate:", plate)
         user = users.find_one({"plates": plate})
         
-        if user:
+        if not user:
+            return f"Detected Plate: {plate}, Plate not registered"
+        
+        if user.get("active") and user.get("active_plate") == plate:
+            print(f"Plate {plate} already active — calling leave route.")
+            with app.test_request_context():
+                return leave_now(user["email"])
+            
+        else:
             users.update_one(
                 {"_id": user["_id"]},
                 {"$set": {
@@ -228,9 +236,7 @@ def anpr():
                     "active": True
                 }}
             )
-            return f"Detected Plate: {plate}"
-        else:
-            return f"Detected Plate: {plate}, Plate not registered"
+            return f"Plate {plate} entered. Timer started."
     else:
         return "No plate detected"
 
