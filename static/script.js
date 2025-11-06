@@ -11,7 +11,7 @@ async function updateStatus(userEmail) {
 let redirected = false;
 async function checkParkingStatus(userEmail) {
     try {
-    const res = await fetch(`/status/${userEmail}`);
+    const res = await fetch(`/parkingStatus/${userEmail}`);
     const data = await res.json();
 
     if (!data.active && data.amount_due > 0 && !redirected) {

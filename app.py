@@ -268,8 +268,8 @@ def format_time(timestamp):
     dt = datetime.fromtimestamp(timestamp)
     return dt.strftime("%H:%M:%S")
 
-@app.route('/status/<email>')
-def status(email):
+@app.route('/parkingStatus/<email>')
+def parkingStatus(email):
     user = users.find_one({"email": email})
     if not user:
         return jsonify({"error": "User not found"}), 404
