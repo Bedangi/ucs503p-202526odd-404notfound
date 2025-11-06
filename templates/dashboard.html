@@ -101,9 +101,11 @@
 
     <script src="/static/script.js"></script>
     <script>
-        const email = '{{ user.email }}';
-        updateStatus(email);
-        setInterval(() => updateStatus(email), 1000);
+        const userEmail = '{{ user.email }}';
+        updateStatus(userEmail);
+        setInterval(() => updateStatus(userEmail), 1000);
+        checkParkingStatus(userEmail);
+        setInterval(() => checkParkingStatus(userEmail), 3000);
     </script>
 </body>
 </html>

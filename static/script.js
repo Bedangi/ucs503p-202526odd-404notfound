@@ -1,5 +1,5 @@
-async function updateStatus(email) {
-    const res = await fetch(`/status/${email}`);
+async function updateStatus(userEmail) {
+    const res = await fetch(`/status/${userEmail}`);
     const data = await res.json();
 
     document.getElementById("plate").innerText = data.active ? data.active_plate : "-";
@@ -8,26 +8,40 @@ async function updateStatus(email) {
     document.getElementById("bill").innerText = data.bill;
 }
 
-async function leaveNow(email) {
+let redirected = false;
+async function checkParkingStatus(userEmail) {
     try {
-        const response = await fetch(`/leave/${email}`, { method: "POST" });
+    const res = await fetch(`/status/${userEmail}`);
+    const data = await res.json();
 
-        let data;
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            data = await response.json();
-        } else {
-            data = await response.text(); // fallback
-            throw new Error(data);
-        }
-
-        // If success, redirect
-        window.location.href = `/bill/${email}`;
-    } catch (error) {
-        console.error("Error leaving:", error);
-        alert(error.message || "Failed to process leave request.");
+    if (!data.active && data.amount_due > 0 && !redirected) {
+        redirected = true; // prevent double redirects
+        window.location.href = `/bill/${userEmail}`;
+    }
+    } catch (err) {
+    console.error("Error checking status:", err);
     }
 }
+// async function leaveNow(email) {
+//     try {
+//         const response = await fetch(`/leave/${email}`, { method: "POST" });
+
+//         let data;
+//         const contentType = response.headers.get("content-type");
+//         if (contentType && contentType.includes("application/json")) {
+//             data = await response.json();
+//         } else {
+//             data = await response.text(); // fallback
+//             throw new Error(data);
+//         }
+
+//         // If success, redirect
+//         window.location.href = `/bill/${email}`;
+//     } catch (error) {
+//         console.error("Error leaving:", error);
+//         alert(error.message || "Failed to process leave request.");
+//     }
+// }
 
 async function deletePlate(plate) {
     const email = currUserEmail;

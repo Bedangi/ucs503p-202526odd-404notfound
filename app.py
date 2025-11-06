@@ -142,7 +142,7 @@ def leave_now(email):
         {"$set": {"active": False, "bill": cost}}
     )
 
-    return jsonify({"message": "Leave request initiated, checking in 5 sec"})
+    return jsonify({"message": "Leave request initiated."})
 
 @app.route("/status/<email>")
 def status(email):
@@ -267,6 +267,21 @@ def bill_page(email):
 def format_time(timestamp):
     dt = datetime.fromtimestamp(timestamp)
     return dt.strftime("%H:%M:%S")
+
+@app.route('/status/<email>')
+def status(email):
+    user = users.find_one({"email": email})
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Check if the user has any pending bill
+    active = user.get("active", False)
+    amount_due = user.get("amount_due", 0)
+
+    return jsonify({
+        "active": active,
+        "amount_due": amount_due
+    })
 
 # Run App
 if __name__ == "__main__":
