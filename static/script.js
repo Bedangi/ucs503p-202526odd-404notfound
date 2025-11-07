@@ -8,20 +8,6 @@ async function updateStatus(userEmail) {
     document.getElementById("bill").innerText = data.bill;
 }
 
-let redirected = false;
-async function checkParkingStatus(userEmail) {
-    try {
-    const res = await fetch(`/parkingStatus/${userEmail}`);
-    const data = await res.json();
-
-    if (!data.active && data.amount_due > 0 && !redirected) {
-        redirected = true; // prevent double redirects
-        window.location.href = `/bill/${userEmail}`;
-    }
-    } catch (err) {
-    console.error("Error checking status:", err);
-    }
-}
 // async function leaveNow(email) {
 //     try {
 //         const response = await fetch(`/leave/${email}`, { method: "POST" });

@@ -86,14 +86,16 @@
                     </div>
                 </div>
 
-                <!-- Payment Button -->
-                <!-- <div class="pt-6">
+                <!-- Go to bill page Button -->
+                <div class="pt-6">
                     <button 
-                      onclick="leaveNow('{{ user.email }}')"
+                      id="billButton"
+                      style="display: none;"
+                      onclick="goToBillPage('{{ user.email }}')"
                       class="w-full bg-[var(--primary-color)] text-[var(--background-color)] px-6 py-3 rounded-full font-semibold hover:bg-[var(--accent-color)] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">
-                        Leave Now
+                        Bill Page
                     </button>
-                </div> -->
+                </div>
             </div>
         </main>
       </div>
@@ -102,10 +104,31 @@
     <script src="/static/script.js"></script>
     <script>
         const userEmail = '{{ user.email }}';
+        const billButton = document.getElementById("billButton");
+
+        async function checkBillStatus() {
+            try {
+            const res = await fetch(`/parkingStatus/${userEmail}`);
+            const data = await res.json();
+
+            if (data.amount_due > 0) {
+                billButton.style.display = "block";
+            } else {
+                billButton.style.display = "none";
+            }
+            } catch (err) {
+            console.error("Error checking bill status:", err);
+            }
+        }
+        setInterval(checkBillStatus, 3000);
+        checkBillStatus();
+
+        function goToBillPage(email) {
+            window.location.href = `/bill/${email}`;
+        }
+
         updateStatus(userEmail);
         setInterval(() => updateStatus(userEmail), 1000);
-        checkParkingStatus(userEmail);
-        setInterval(() => checkParkingStatus(userEmail), 3000);
     </script>
 </body>
 </html>

@@ -274,13 +274,9 @@ def parkingStatus(email):
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    # Check if the user has any pending bill
-    active = user.get("active", False)
-    amount_due = user.get("amount_due", 0)
-
     return jsonify({
-        "active": active,
-        "amount_due": amount_due
+        "active": user.get("active", False),
+        "amount_due": user.get("bill", 0)
     })
 
 # Run App
