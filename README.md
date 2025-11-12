@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
   
 # 🚗 **ParkSmart: Automated Transparent Parking Billing System**
@@ -13,8 +12,6 @@
 ![Payment](https://img.shields.io/badge/Payment-Razorpay-lightblue.svg)
 
 </div>
-
----
 
 ## 🌟 **Overview**
 
