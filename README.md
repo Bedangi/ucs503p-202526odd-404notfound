@@ -32,8 +32,6 @@ It replaces outdated paper tickets and manual billing with a **camera-based numb
 ## 🧩 **System Architecture**
 
 ```
-
-```
     ┌────────────────────────────┐
     │       User Device          │
     │ (Signup / Login / Dashboard)│
@@ -60,8 +58,6 @@ It replaces outdated paper tickets and manual billing with a **camera-based numb
      │ Handles secure payments    │
      └────────────────────────────┘
 ```
-
-````
 
 ---
 
