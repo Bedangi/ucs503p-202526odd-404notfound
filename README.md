@@ -4,7 +4,6 @@
 
 ### _Smart, Fair, and Transparent Parking for a Digital World_
 
-![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
 ![Flask](https://img.shields.io/badge/Backend-Flask-orange.svg)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen.svg)
@@ -26,6 +25,11 @@ It replaces outdated paper tickets and manual billing with a **camera-based numb
 - 📱 User Dashboard for Vehicle Management  
 - 💰 Transparent Time-Based Billing  
 - ☁️ Cloud Database using MongoDB  
+
+---
+
+### 🎯 **Deployed At**
+https://parksmart-u0yf.onrender.com
 
 ---
 
@@ -174,8 +178,7 @@ It brings **transparency, fairness, and trust** to everyday parking systems.
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/ParkSmart.git
-cd ParkSmart
+git clone https://github.com/Bedangi/ucs503p-202526odd-404notfound.git
 ````
 
 ### 2️⃣ Install Dependencies
@@ -201,16 +204,6 @@ python app.py
 ```
 
 Then visit 👉 **[http://localhost:5000](http://localhost:5000)**
-
----
-
-## 📸 **Preview**
-
-| Action       | Screenshot                                                              |
-| ------------ | ----------------------------------------------------------------------- |
-| Login Page   | ![Login](https://via.placeholder.com/300x150?text=Login+Page)           |
-| Dashboard    | ![Dashboard](https://via.placeholder.com/300x150?text=Dashboard+Screen) |
-| Bill Receipt | ![Bill](https://via.placeholder.com/300x150?text=Bill+Receipt)          |
 
 ---
 
