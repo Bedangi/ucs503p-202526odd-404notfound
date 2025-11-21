@@ -117,6 +117,11 @@ https://parksmart-u0yf.onrender.com
 8. **Receipt Generation:** User receives a digital receipt.
 
 ---
+MONGO_URI=mongodb+srv://bedasaha789_db_user:5eZT4qYaghR57LoG@cluster0.fyqmenz.mongodb.net/parksmart_db?retryWrites=true&w=majority&appName=Cluster0
+RAZORPAY_KEY_ID=rzp_test_Rf9HqqVb12a32k
+RAZORPAY_KEY_SECRET=57gEygIMz4ZxBZjyan3aEQq0
+PLATE_RECOGNIZER_API_KEY=d87fa3a33c7697c74670e6f314a1b00c6c92b700
+FLASK_SECRET_KEY=88f95d372c7f4180b5667b581bd7fa31a02dc50da942b57422230b1e60ff88d6
 
 ## 🧪 **Testing**
 
